@@ -1,0 +1,28 @@
+{
+  "name": "wdd330-cinefind-project",
+  "version": "1.0.0",
+  "description": "Movie finder web application using TMDB API",
+  "main": "main.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build --emptyOutDir",
+    "lint": "eslint *.js src/**/*.js",
+    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "team5",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "babel-jest": "^30.3.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "jest": "^30.3.0",
+    "prettier": "^3.8.2",
+    "vite": "^8.0.8"
+  }
+}

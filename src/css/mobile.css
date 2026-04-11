@@ -1,0 +1,148 @@
+.site-header {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+
+    .header-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-logo {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--color-primary);
+    }
+
+    .header-nav__links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        a {
+            font-size: 0.85rem;
+            color: var(--color-muted);
+
+            &:hover {
+                color: var(--color-dark);
+            }
+        }
+    }
+
+    .wishlist-count {
+        background: var(--color-primary);
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 7px;
+        border-radius: 10px;
+        margin-left: 4px;
+    }
+}
+
+.site-footer {
+    margin-top: auto;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+}
+
+main {
+    padding: 1.25rem 1rem;
+    width: 100%;
+}
+
+.hero {
+    padding: 1.25rem 0;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        font-size: 0.9rem;
+        font-family: var(--font-main);
+
+        &:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0;
+
+    a {
+        font-size: 0.8rem;
+        padding: 4px 12px;
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        color: var(--color-muted);
+
+        &:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+    }
+}
+
+.trending,
+.search-results {
+    margin-top: 1.5rem;
+
+    h2 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+}
+
+.movie-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+
+    .movie-card {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            background: var(--color-surface);
+        }
+
+        .movie-card__info {
+            padding: 0.5rem;
+
+            h2 {
+                font-size: 0.8rem;
+                font-weight: 500;
+                margin-bottom: 3px;
+            }
+
+            p {
+                font-size: 0.7rem;
+                color: var(--color-muted);
+            }
+        }
+    }
+}

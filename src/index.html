@@ -1,0 +1,52 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CineFind | Home</title>
+        <link rel="stylesheet" href="/css/styles.css"/>
+        <link rel="stylesheet" href="/css/mobile.css"/>
+        <link rel="stylesheet" href="/css/desktop.css"/>
+        <script src="/js/main.js" type="module"></script>
+    </head>
+
+    <body>
+        <header class="divider" id="main-header"></header>
+        <main class="divider">
+            <div class="hero">
+                <form class="search-form" name="search">
+                    <input
+                      type="text"
+                      name="query"
+                      placeholder="Search for a movie..."
+                      autocomplete="off"
+                    />
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="genre-list">
+                <a href="/movie_listing/index.html?genre=28">Action</a>
+                <a href="/movie_listing/index.html?genre=35">Comedy</a>
+                <a href="/movie_listing/index.html?genre=18">Drama</a>
+                <a href="/movie_listing/index.html?genre=27">Horror</a>
+                <a href="/movie_listing/index.html?genre=10751">Family</a>
+                <a href="/movie_listing/index.html?genre=878">Sci-Fi</a>
+                <a href="/movie_listing/index.html?genre=16">Animation</a>
+                <a href="/movie_listing/index.html?genre=12">Adventure</a>
+            </div>
+
+            <section class="trending">
+                <h2>Trending this week</h2>
+                <ul class="movie-list"></ul>
+            </section>
+
+            <section class="search-results hidden">
+                <h2>Search results</h2>
+                <ul class="movie-list"></ul>
+            </section>
+        </main>
+        <footer id="main-footer"></footer>
+    </body>
+</html>

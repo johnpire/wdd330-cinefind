@@ -1,0 +1,95 @@
+@media (min-width: 641px) {
+    .site-header {
+        padding: 1rem 1.5rem;
+
+        .header-nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-logo {
+            font-size: 1.25rem;
+        }
+
+        .header-nav__links {
+            gap: 1.5rem;
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .site-footer {
+        padding: 1.5rem;
+        font-size: 0.85rem;
+    }
+
+    main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+    }
+
+    .hero {
+        padding: 2rem 0;
+    }
+
+    .search-form {
+        flex-direction: row;
+        max-width: 560px;
+
+        input {
+            flex: 1;
+        }
+
+        .btn {
+            width: auto;
+        }
+    }
+
+    .genre-list {
+        margin: 1.5rem 0;
+
+        a {
+            font-size: 0.85rem;
+            padding: 4px 14px;
+        }
+    }
+
+    .trending,
+    .search-results {
+        margin-top: 2rem;
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .movie-list {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.25rem;
+
+        .movie-card {
+            transition: transform 0.2s;
+
+            &:hover {
+                transform: translateY(-3px);
+            }
+
+            .movie-card__info {
+                padding: 0.75rem;
+
+                h2 {
+                    font-size: 0.875rem;
+                }
+
+                p {
+                    font-size: 0.75rem;
+                }
+            }
+        }
+    }
+}
