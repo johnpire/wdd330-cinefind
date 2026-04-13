@@ -1,6 +1,8 @@
 @media (min-width: 641px) {
+
+    /* Header */
     .site-header {
-        padding: 1rem 1.5rem;
+        padding: 1rem 2rem;
 
         .header-nav {
             max-width: 1200px;
@@ -14,28 +16,28 @@
 
         .header-nav__links {
             gap: 1.5rem;
-
-            a {
-                font-size: 0.9rem;
-            }
         }
     }
 
+    /* Footer */
     .site-footer {
-        padding: 1.5rem;
+        padding: 1.5rem 2rem;
         font-size: 0.85rem;
     }
 
+    /* Main content */
     main {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 2rem 1.5rem;
+        padding: 2rem 2rem;
     }
 
+    /* Hero */
     .hero {
-        padding: 2rem 0;
+        padding: 2.5rem 0 1.5rem;
     }
 
+    /* Search form — side by side on desktop */
     .search-form {
         flex-direction: row;
         max-width: 560px;
@@ -49,27 +51,9 @@
         }
     }
 
-    .browse-link {
-        margin: 1.5rem 0;
-
-        a {
-            font-size: 0.85rem;
-            padding: 4px 14px;
-        }
-    }
-
-    .trending,
-    .search-results {
-        margin-top: 2rem;
-
-        h2 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-    }
-
+    /* Movie grid — 6 columns on desktop */
     .movie-list {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        grid-template-columns: repeat(6, 1fr);
         gap: 1.25rem;
 
         .movie-card {
@@ -91,5 +75,42 @@
                 }
             }
         }
+    }
+
+    /* Movie detail — side by side on desktop */
+    .movie-detail {
+        flex-direction: row;
+        align-items: start;
+        gap: 2rem;
+
+        img {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .movie-detail__info {
+            h2 {
+                font-size: 1.75rem;
+            }
+        }
+    }
+
+    /* Filter modal — slightly wider on desktop */
+    dialog {
+        width: 320px;
+    }
+
+    /* Wishlist — wider cards on desktop */
+    .wishlist {
+        .wishlist-card {
+            img {
+                width: 80px;
+            }
+        }
+    }
+
+    /* Review form — constrained width on desktop */
+    .review-form {
+        max-width: 560px;
     }
 }

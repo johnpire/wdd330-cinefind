@@ -1,9 +1,11 @@
+/* Reset */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Variables */
 :root {
     --color-primary: #E11D48;
     --color-dark: #0F172A;
@@ -14,6 +16,7 @@
     --radius: 8px;
 }
 
+/* Base */
 body {
     font-family: var(--font-main);
     color: var(--color-dark);
@@ -33,10 +36,12 @@ img {
     display: block;
 }
 
+/* Utility */
 .hidden {
     display: none;
 }
 
+/* Buttons */
 .btn {
     padding: 0.6rem 1.25rem;
     border-radius: var(--radius);
@@ -53,10 +58,452 @@ img {
             background: #be123c;
         }
     }
+
+    &.btn-outline {
+        background: none;
+        border: 1px solid var(--color-border);
+        color: var(--color-dark);
+
+        &:hover {
+            background: var(--color-surface);
+        }
+    }
 }
 
-/* Lazy Loading */
+/* Header */
+.site-header {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+
+    .header-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-logo {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--color-primary);
+    }
+
+    .header-nav__links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        a {
+            font-size: 0.85rem;
+            color: var(--color-muted);
+
+            &:hover {
+                color: var(--color-dark);
+            }
+        }
+    }
+
+    /* Wishlist badge */
+    .wishlist-count {
+        background: var(--color-primary);
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 7px;
+        border-radius: 10px;
+        margin-left: 4px;
+    }
+}
+
+/* Footer */
+.site-footer {
+    margin-top: auto;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+}
+
+/* Main content wrapper */
+main {
+    padding: 1.25rem 1rem;
+    width: 100%;
+}
+
+/* Hero / search area */
+.hero {
+    padding: 1.25rem 0;
+}
+
+/* Search form */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        font-size: 0.9rem;
+        font-family: var(--font-main);
+
+        &:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+    }
+}
+
+/* Genre pills on homepage */
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0;
+
+    a {
+        font-size: 0.8rem;
+        padding: 4px 12px;
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        color: var(--color-muted);
+
+        &:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+    }
+}
+
+/* Section headings */
+.trending,
+.search-results {
+    margin-top: 1.5rem;
+
+    h2 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* Movie card grid */
+.movie-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+
+    /* Individual movie card */
+    .movie-card {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            background: var(--color-surface);
+        }
+
+        /* Card text info */
+        .movie-card__info {
+            padding: 0.5rem;
+            text-align: center;
+
+            h2 {
+                font-size: 0.8rem;
+                font-weight: 500;
+                margin-bottom: 3px;
+            }
+
+            p {
+                font-size: 0.7rem;
+                color: var(--color-muted);
+            }
+        }
+    }
+}
+
+/* Filter bar above movie list */
+.listing-filter-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+
+    p {
+        font-size: 0.8rem;
+        color: var(--color-muted);
+    }
+
+    /* Filter open button */
+    #listing-filter-openBtn {
+        padding: 0.4rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        background: none;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: var(--font-main);
+
+        &:hover {
+            background: var(--color-surface);
+        }
+    }
+}
+
+/* Filter modal dialog */
+dialog {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    width: 280px;
+    background: white;
+
+    /* Genre dropdown inside modal */
+    select {
+        width: 100%;
+        padding: 0.4rem 0.5rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        font-size: 0.85rem;
+        font-family: var(--font-main);
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+    }
+
+    /* Sort buttons inside modal */
+    button {
+        display: block;
+        width: 100%;
+        padding: 0.4rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        background: none;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: var(--font-main);
+        margin-bottom: 0.5rem;
+        text-align: left;
+
+        &:hover {
+            background: var(--color-surface);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        /* Close button distinct style */
+        &#listing-filter-closeBtn {
+            margin-top: 0.5rem;
+            color: var(--color-muted);
+            border-color: var(--color-border);
+
+            &:hover {
+                background: var(--color-surface);
+                color: var(--color-dark);
+            }
+        }
+    }
+
+    /* Modal backdrop */
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Lazy load sentinel — invisible div that triggers load more */
 .sentinel {
     height: 50px;
     width: 100%;
+}
+
+/* Movie detail page */
+.movie-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    img {
+        width: 100%;
+        border-radius: var(--radius);
+    }
+
+    .movie-detail__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        /* Genre, year */
+        .movie-detail__meta {
+            font-size: 0.9rem;
+            color: var(--color-muted);
+        }
+
+        /* Star rating */
+        .movie-detail__rating {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        /* Runtime */
+        .movie-detail__runtime {
+            font-size: 0.85rem;
+            color: var(--color-muted);
+        }
+
+        /* Synopsis */
+        .movie-detail__overview {
+            line-height: 1.7;
+            color: var(--color-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Add to wishlist button */
+        .movie-detail__add button {
+            padding: 0.6rem 1.25rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: var(--font-main);
+
+            &:hover {
+                background: #be123c;
+            }
+        }
+    }
+}
+
+/* Wishlist page */
+.wishlist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .wishlist-card {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+
+        img {
+            width: 60px;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .wishlist-card__info {
+            flex: 1;
+
+            h2 {
+                font-size: 0.95rem;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+
+            p {
+                font-size: 0.8rem;
+                color: var(--color-muted);
+            }
+        }
+
+        /* Remove button */
+        .remove-btn {
+            font-size: 0.8rem;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            border-radius: 4px;
+            padding: 4px 10px;
+            background: none;
+            cursor: pointer;
+
+            &:hover {
+                background: var(--color-primary);
+                color: white;
+            }
+        }
+    }
+}
+
+/* Review form */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        font-size: 0.9rem;
+        font-family: var(--font-main);
+
+        &:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+}
+
+/* Review confirmation */
+.confirmation {
+    text-align: center;
+    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    /* Checkmark circle */
+    .confirmation__icon {
+        width: 56px;
+        height: 56px;
+        background: var(--color-primary);
+        border-radius: 50%;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    p {
+        color: var(--color-muted);
+        font-size: 0.9rem;
+    }
 }
