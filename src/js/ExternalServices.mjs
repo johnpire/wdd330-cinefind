@@ -11,17 +11,13 @@ async function convertToJson(res) {
 }
 
 export default class ExternalServices {
-    async getTrending() {
-        const response = await fetch(`${baseURL}trending/movie/week?api_key=${apiKey}`);
-        const data = await convertToJson(response);
-        return data.results;
-    }
-
-    async getData(genre = null) {
-        const endpoint = genre
-            ? `${baseURL}discover/movie?api_key=${apiKey}&with_genres=${genre}`
-            : `${baseURL}discover/movie?api_key=${apiKey}&sort_by=popularity.desc`;
-        const response = await fetch(endpoint);
+    async getMovies(filters = {}) {
+        const params = new URLSearchParams({
+            api_key: apiKey,
+            sort_by: "popularity.desc",
+            ...filters
+        });
+        const response = await fetch(`${baseURL}discover/movie?${params}`);
         const data = await convertToJson(response);
         return data.results;
     }
@@ -29,6 +25,12 @@ export default class ExternalServices {
     async findMovieById(id) {
         const response = await fetch(`${baseURL}movie/${id}?api_key=${apiKey}`);
         return await convertToJson(response);
+    }
+
+    async getTrending() {
+        const response = await fetch(`${baseURL}trending/movie/week?api_key=${apiKey}`);
+        const data = await convertToJson(response);
+        return data.results;
     }
 
     async searchMovies(query) {
@@ -41,5 +43,14 @@ export default class ExternalServices {
         const response = await fetch(`${baseURL}genre/movie/list?api_key=${apiKey}`);
         const data = await convertToJson(response);
         return data.genres;
+    }
+
+    async submitReview(payload) {
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        };
+        return await fetch(import.meta.env.VITE_SERVER_URL + "review/", options).then(convertToJson);
     }
 }
