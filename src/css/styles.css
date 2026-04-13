@@ -54,3 +54,9 @@ img {
         }
     }
 }
+
+/* Lazy Loading */
+.sentinel {
+    height: 50px;
+    width: 100%;
+}

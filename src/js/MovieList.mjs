@@ -41,23 +41,58 @@ export default class MovieList {
         this.listElement = listElement;
         this.list = [];
         this.filters = {};
+        this.currentPage = 1;
+        this.loading = false;
     }
 
     async init() {
         const genres = await this.dataSource.getGenres();
         this.list = await this.dataSource.getMovies();
-        
+
         this.listElement.insertAdjacentHTML(
             "beforebegin",
             createListingFilter(this.list.length, genres)
         );
-      
+
         initListingFilter(this);
         this.renderList(this.list);
+        this.initLazyLoad();
     }
 
-    renderList(list) {
-        renderListWithTemplate(movieCardTemplate, this.listElement, list, "afterbegin", true);
+    renderList(list, append = false) {
+        renderListWithTemplate(
+            movieCardTemplate,
+            this.listElement,
+            list,
+            "beforeend",
+            !append
+        );
+    }
+
+    async loadMore() {
+        if (this.loading) return;
+        this.loading = true;
+        this.currentPage++;
+        const more = await this.dataSource.getMovies(this.filters, this.currentPage);
+        this.list = [...this.list, ...more];
+        this.renderList(more, true);
+        this.loading = false;
+    }
+
+    initLazyLoad() {
+        const sentinel = document.createElement("div");
+        sentinel.classList.add("sentinel");
+        this.listElement.insertAdjacentElement("afterend", sentinel);
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.loadMore();
+                }
+            });
+        }, { threshold: 0.1 });
+      
+        observer.observe(sentinel);
     }
 }
 
@@ -71,34 +106,39 @@ function initListingFilter(movieListInstance) {
 
     document.querySelector("#genre-filter").addEventListener("change", async (e) => {
         if (e.target.value) {
-            movieListInstance.filters.with_genres = e.target.value;
+          movieListInstance.filters.with_genres = e.target.value;
         } else {
-            delete movieListInstance.filters.with_genres;
+          delete movieListInstance.filters.with_genres;
         }
+        movieListInstance.currentPage = 1;
         movieListInstance.list = await movieListInstance.dataSource.getMovies(movieListInstance.filters);
         movieListInstance.renderList(movieListInstance.list);
         modal.close();
     });
 
     document.querySelector("#rating-high-low").addEventListener("click", () => {
+        movieListInstance.currentPage = 1;
         const sorted = [...movieListInstance.list].sort((a, b) => b.vote_average - a.vote_average);
         movieListInstance.renderList(sorted);
         modal.close();
     });
 
     document.querySelector("#rating-low-high").addEventListener("click", () => {
+        movieListInstance.currentPage = 1;
         const sorted = [...movieListInstance.list].sort((a, b) => a.vote_average - b.vote_average);
         movieListInstance.renderList(sorted);
         modal.close();
     });
 
     document.querySelector("#year-newest").addEventListener("click", () => {
+        movieListInstance.currentPage = 1;
         const sorted = [...movieListInstance.list].sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
         movieListInstance.renderList(sorted);
         modal.close();
     });
 
     document.querySelector("#year-oldest").addEventListener("click", () => {
+        movieListInstance.currentPage = 1;
         const sorted = [...movieListInstance.list].sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
         movieListInstance.renderList(sorted);
         modal.close();

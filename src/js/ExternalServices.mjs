@@ -11,10 +11,11 @@ async function convertToJson(res) {
 }
 
 export default class ExternalServices {
-    async getMovies(filters = {}) {
+    async getMovies(filters = {}, page = 1) { // since limit of display is 20, I added paging system utilized via lazy loading to show more than 20 movies
         const params = new URLSearchParams({
             api_key: apiKey,
             sort_by: "popularity.desc",
+            page,
             ...filters
         });
         const response = await fetch(`${baseURL}discover/movie?${params}`);
