@@ -17,8 +17,11 @@ export default class ExternalServices {
         return data.results;
     }
 
-    async getData(genre) {
-        const response = await fetch(`${baseURL}discover/movie?api_key=${apiKey}&with_genres=${genre}`);
+    async getData(genre = null) {
+        const endpoint = genre
+            ? `${baseURL}discover/movie?api_key=${apiKey}&with_genres=${genre}`
+            : `${baseURL}discover/movie?api_key=${apiKey}&sort_by=popularity.desc`;
+        const response = await fetch(endpoint);
         const data = await convertToJson(response);
         return data.results;
     }

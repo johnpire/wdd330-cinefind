@@ -16,10 +16,14 @@ export function movieCardTemplate(movie) {
     `;
 }
 
-function createListingFilter(itemsCount) {
+function createListingFilter(itemsCount, genres) {
     return `
     <div class="listing-filter-box">
         <dialog id="listing-filter-modal">
+            <select id="genre-filter">
+              <option value="">All Genres</option>
+              ${genres.map(g => `<option value="${g.id}">${g.name}</option>`).join("")}
+            </select>
             <button id="rating-high-low">Rating: High to Low</button>
             <button id="rating-low-high">Rating: Low to High</button>
             <button id="year-newest">Newest First</button>
@@ -40,19 +44,20 @@ export default class MovieList {
     }
 
     async init() {
+        const genres = await this.dataSource.getGenres();
         this.list = await this.dataSource.getData(this.genre);
 
         this.listElement.insertAdjacentHTML(
             "beforebegin",
-            createListingFilter(this.list.length)
+            createListingFilter(this.list.length, genres)
         );
-
+      
         initListingFilter(this);
         this.renderList(this.list);
     }
 
     renderList(list) {
-      renderListWithTemplate(movieCardTemplate, this.listElement, list, "afterbegin", true);
+        renderListWithTemplate(movieCardTemplate, this.listElement, list, "afterbegin", true);
     }
 }
 
@@ -63,6 +68,12 @@ function initListingFilter(movieListInstance) {
 
     openBtn.addEventListener("click", () => modal.showModal());
     closeBtn.addEventListener("click", () => modal.close());
+
+    document.querySelector("#genre-filter").addEventListener("change", async (e) => {
+        const selected = e.target.value;
+        movieListInstance.list = await movieListInstance.dataSource.getData(selected || null);
+        movieListInstance.renderList(movieListInstance.list);
+    });
 
     document.querySelector("#rating-high-low").addEventListener("click", () => {
         const sorted = [...movieListInstance.list].sort(
