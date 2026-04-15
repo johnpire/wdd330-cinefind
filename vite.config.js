@@ -10,7 +10,7 @@ build: {
     input: {
       main: resolve(__dirname, "src/index.html"),
       listing: resolve(__dirname, "src/movie_listing/index.html"),
-      wishlist: resolve(__dirname, "src/wishlist/index.html"),
+      watchlist: resolve(__dirname, "src/watchlist/index.html"),
       review: resolve(__dirname, "src/review/index.html"),
       movie: resolve(__dirname, "src/movie_pages/index.html"),
     },

@@ -29,7 +29,7 @@
         }
     }
 
-    .wishlist-count {
+    .watchlist-count {
         background: var(--color-primary);
         color: white;
         font-size: 0.7rem;

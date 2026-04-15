@@ -13,21 +13,21 @@ export default class MovieDetails {
         this.movie = await this.dataSource.findMovieById(this.movieId);
         this.displayMovie();
 
-        const button = document.getElementById("addToWishlist");
-        button.addEventListener("click", () => this.addToWishlist());
+        const button = document.getElementById("addToWatchlist");
+        button.addEventListener("click", () => this.addToWatchlist());
     }
 
-    addToWishlist() {
-        let wishlist = getLocalStorage("cine-wishlist");
+    addToWatchlist() {
+        let watchlist = getLocalStorage("cine-watchlist");
 
-        if (!wishlist) {
-            wishlist = [];
+        if (!watchlist) {
+            watchlist = [];
         }
 
-        const exists = wishlist.some((m) => m.id === this.movie.id);
+        const exists = watchlist.some((m) => m.id === this.movie.id);
         if (!exists) {
-            wishlist.push(this.movie);
-            setLocalStorage("cine-wishlist", wishlist);
+            watchlist.push(this.movie);
+            setLocalStorage("cine-watchlist", watchlist);
         }
     }
 
@@ -54,8 +54,8 @@ function createMovieMarkup(movie) {
                 <p class="movie-detail__runtime">${movie.runtime} min</p>
                 <p class="movie-detail__overview">${movie.overview}</p>
                 <div class="movie-detail__add">
-                    <button id="addToWishlist" data-id="${movie.id}">
-                        + Add to Wishlist
+                    <button id="addToWatchlist" data-id="${movie.id}">
+                        + Add to Watchlist
                     </button>
                 </div>
             </div>

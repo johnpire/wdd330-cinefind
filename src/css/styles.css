@@ -102,8 +102,8 @@ img {
         }
     }
 
-    /* Wishlist badge */
-    .wishlist-count {
+    /* Watchlist badge */
+    .watchlist-count {
         background: var(--color-primary);
         color: white;
         font-size: 0.7rem;
@@ -381,7 +381,7 @@ main {
             font-size: 0.9rem;
         }
 
-        /* Add to wishlist button */
+        /* Add to watchlist button */
         .movie-detail__add button {
             padding: 0.6rem 1.25rem;
             background: var(--color-primary);
@@ -399,14 +399,24 @@ main {
     }
 }
 
-/* Wishlist page */
-.wishlist {
+/* Watchlist page */
+.watchlist-list {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
-    .wishlist-card {
+    /* Empty state */
+    .watchlist-empty {
+        color: var(--color-muted);
+        font-size: 0.9rem;
+        
+        a {
+          color: var(--color-primary);
+        }
+    }
+
+    .watchlist-card {
         display: flex;
         gap: 1rem;
         align-items: center;
@@ -414,15 +424,14 @@ main {
         border: 1px solid var(--color-border);
         border-radius: var(--radius);
 
-        img {
+        .watchlist-card__image img {
             width: 60px;
             aspect-ratio: 2/3;
             object-fit: cover;
             border-radius: 4px;
-            flex-shrink: 0;
         }
 
-        .wishlist-card__info {
+      .watchlist-card__info {
             flex: 1;
 
             h2 {
@@ -435,22 +444,13 @@ main {
                 font-size: 0.8rem;
                 color: var(--color-muted);
             }
-        }
+      }
 
-        /* Remove button */
-        .remove-btn {
-            font-size: 0.8rem;
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary);
-            border-radius: 4px;
-            padding: 4px 10px;
-            background: none;
-            cursor: pointer;
-
-            &:hover {
-                background: var(--color-primary);
-                color: white;
-            }
+      /* Review and remove buttons */
+      .watchlist-card__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
     }
 }

@@ -100,9 +100,9 @@
         width: 320px;
     }
 
-    /* Wishlist — wider cards on desktop */
-    .wishlist {
-        .wishlist-card {
+    /* watchlist — wider cards on desktop */
+    .watchlist {
+        .watchlist-card {
             img {
                 width: 80px;
             }
