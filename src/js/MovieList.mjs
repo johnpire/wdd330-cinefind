@@ -39,6 +39,11 @@ export default class MovieList {
         
         // start lazy load observer
         this.initLazyLoad();
+
+        // re-render genre UI on resize
+        window.addEventListener("resize", () => {
+            this.renderGenres(genres);
+        });
     }
 
     renderGenres(genres) {
