@@ -176,6 +176,79 @@ main {
     }
 }
 
+/* Genre tabs wrapper */
+.genre-tabs {
+    margin-bottom: 1.25rem;
+    position: relative;
+
+    /* Desktop toggle label */
+    .genre-toggle {
+        padding: 4px 16px;
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        background: none;
+        font-size: 0.85rem;
+        color: var(--color-muted);
+        cursor: pointer;
+        font-family: var(--font-main);
+
+        &:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+    }
+
+    /* Expanded genre pills — sits below toggle */
+    .genre-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+
+        &.hidden {
+            display: none;
+        }
+
+        .genre-tab {
+            padding: 4px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            background: none;
+            font-size: 0.85rem;
+            color: var(--color-muted);
+            cursor: pointer;
+            font-family: var(--font-main);
+
+            &:hover {
+                border-color: var(--color-primary);
+                color: var(--color-primary);
+            }
+
+            &.active {
+                background: var(--color-primary);
+                border-color: var(--color-primary);
+                color: white;
+            }
+        }
+    }
+
+    /* Mobile dropdown */
+    .genre-select {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        font-size: 0.9rem;
+        font-family: var(--font-main);
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+    }
+}   
+
 /* Section headings */
 .trending,
 .search-results {
@@ -253,70 +326,6 @@ main {
         &:hover {
             background: var(--color-surface);
         }
-    }
-}
-
-/* Filter modal dialog */
-dialog {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    width: 280px;
-    background: white;
-
-    /* Genre dropdown inside modal */
-    select {
-        width: 100%;
-        padding: 0.4rem 0.5rem;
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius);
-        font-size: 0.85rem;
-        font-family: var(--font-main);
-        margin-bottom: 0.75rem;
-        cursor: pointer;
-
-        &:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-    }
-
-    /* Sort buttons inside modal */
-    button {
-        display: block;
-        width: 100%;
-        padding: 0.4rem 0.75rem;
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius);
-        background: none;
-        cursor: pointer;
-        font-size: 0.85rem;
-        font-family: var(--font-main);
-        margin-bottom: 0.5rem;
-        text-align: left;
-
-        &:hover {
-            background: var(--color-surface);
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-
-        /* Close button distinct style */
-        &#listing-filter-closeBtn {
-            margin-top: 0.5rem;
-            color: var(--color-muted);
-            border-color: var(--color-border);
-
-            &:hover {
-                background: var(--color-surface);
-                color: var(--color-dark);
-            }
-        }
-    }
-
-    /* Modal backdrop */
-    &::backdrop {
-        background: rgba(0, 0, 0, 0.3);
     }
 }
 
