@@ -84,13 +84,11 @@ export default class MovieDetails {
             console.log("sources:", sources); // test
 
             // filter to subscription services only, remove duplicates by name
-            const unique = sources
-                .filter(s => s.type === "sub")
-                .reduce((acc, s) => {
-                    if (!acc.find(x => x.name === s.name)) acc.push(s);
-                    return acc;
-                }, []);
-                console.log("filtered unique sources:", unique); // test
+            const unique = sources.reduce((acc, s) => {
+                if (!acc.find(x => x.name === s.name)) acc.push(s);
+                return acc;
+            }, []);
+            console.log("filtered unique sources:", unique); // test
 
             if (!unique.length) {
                 container.innerHTML = `<p class="streaming-none">not available on any streaming service.</p>`;
