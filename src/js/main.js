@@ -1,49 +1,54 @@
 import ExternalServices from "./ExternalServices.mjs";
-import MovieList from "./MovieList.mjs";
 import { loadHeaderFooter, renderListWithTemplate } from "./utils.mjs";
+import { movieCardTemplate } from "./MovieList.mjs";
 
 loadHeaderFooter();
 
 const dataSource = new ExternalServices();
 
-const IMG_BASE = "https://image.tmdb.org/t/p/w500";
-
-// trending section
-function trendingCardTemplate(movie) {
-    return `
-        <li class="movie-card">
-            <a href="/movie_pages/index.html?movie=${movie.id}">
-                <img 
-                    src="${movie.poster_path ? IMG_BASE + movie.poster_path : '/images/no-poster.jpg'}" 
-                    alt="${movie.title}">
-                <h2 class="movie-card__title">${movie.title}</h2>
-                <p class="movie-card__year">${movie.release_date?.split("-")[0] ?? "N/A"}</p>
-                <p class="movie-card__rating">★ ${movie.vote_average?.toFixed(1)}</p>
-            </a>
-        </li>
-    `;
-}
-
+// load and render trending movies on homepage
 async function loadTrending() {
     const trendingList = document.querySelector(".trending-list");
     if (!trendingList) return;
 
-    const movies = await dataSource.getTrending();
-    renderListWithTemplate(trendingCardTemplate, trendingList, movies.slice(0, 8));
+    try {
+        const movies = await dataSource.getTrending();
+        renderListWithTemplate(movieCardTemplate, trendingList, movies.slice(0, 8));
+    } catch (err) {
+        console.error("failed to load trending movies:", err);
+        const trendingList = document.querySelector(".trending-list");
+        if (trendingList) {
+            trendingList.innerHTML = `<p class="error-msg">failed to load trending movies. please try again.</p>`;
+        }
+    }
 }
 
-// search feature
+// handle search form submission
 async function handleSearch(query) {
     const resultsSection = document.querySelector(".search-results");
     const resultsList = document.querySelector(".search-results .movie-list");
 
     if (!query.trim()) return;
 
-    const movies = await dataSource.searchMovies(query);
-    resultsSection.classList.remove("hidden");
-    renderListWithTemplate(trendingCardTemplate, resultsList, movies);
+    try {
+        const movies = await dataSource.searchMovies(query);
+
+        if (movies.length === 0) {
+            resultsSection.classList.remove("hidden");
+            resultsList.innerHTML = `<p class="error-msg">no results found for "${query}".</p>`;
+            return;
+        }
+
+        resultsSection.classList.remove("hidden");
+        renderListWithTemplate(movieCardTemplate, resultsList, movies);
+    } catch (err) {
+        console.error("search failed:", err);
+        resultsSection.classList.remove("hidden");
+        resultsList.innerHTML = `<p class="error-msg">search failed. please try again.</p>`;
+    }
 }
 
+// init search form listener
 function initSearch() {
     const form = document.forms["search"];
     if (!form) return;
@@ -54,8 +59,6 @@ function initSearch() {
         handleSearch(query);
     });
 }
-
-// --- Init ---
 
 loadTrending();
 initSearch();
