@@ -401,60 +401,6 @@ main {
     }
 }
 
-/* streaming availability section */
-.streaming-info {
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border);
-
-    h3 {
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: var(--color-muted);
-        margin-bottom: 0.5rem;
-    }
-
-    /* pulsing loading text */
-    .streaming-loading {
-        font-size: 0.85rem;
-        color: var(--color-muted);
-        animation: pulse 1.5s ease infinite;
-    }
-
-    /* no streaming available message */
-    .streaming-none {
-        font-size: 0.85rem;
-        color: var(--color-muted);
-    }
-
-    /* streaming service list */
-    .streaming-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        list-style: none;
-
-        .streaming-item {
-            animation: fadeIn 0.3s ease;
-
-            a {
-                display: inline-block;
-                padding: 4px 12px;
-                border: 1px solid var(--color-border);
-                border-radius: 20px;
-                font-size: 0.8rem;
-                color: var(--color-dark);
-                transition: border-color 0.2s, color 0.2s;
-
-                &:hover {
-                    border-color: var(--color-primary);
-                    color: var(--color-primary);
-                }
-            }
-        }
-    }
-}
-
 /* watchlist page */
 .watchlist-list {
     list-style: none;
