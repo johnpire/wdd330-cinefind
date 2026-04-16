@@ -1,20 +1,58 @@
-
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CineFind | Checkout</title>
-        <link rel="stylesheet" href="/css/styles.css"/>
-        <link rel="stylesheet" href="/css/mobile.css"/>
-        <link rel="stylesheet" href="/css/desktop.css"/>
+        <title>CineFind | Review</title>
+        <link rel="stylesheet" href="/css/styles.css" />
+        <link rel="stylesheet" href="/css/mobile.css" />
+        <link rel="stylesheet" href="/css/desktop.css" />
         <script src="/js/review.js" type="module"></script>
     </head>
-
     <body>
         <header class="divider" id="main-header"></header>
-        <main>
-            
+        <main class="divider">
+            <h1>Leave a Review</h1>
+            <h2 class="review-movie-title"></h2>
+
+            <section class="review-form-section">
+                <form name="review" class="review-form">
+
+                    <fieldset>
+                        <legend>Your Review</legend>
+
+                        <!-- star rating 1 to 5 -->
+                        <label for="rating">Rating</label>
+                        <select name="rating" id="rating" required>
+                            <option value="">Select a rating</option>
+                            <option value="5">★★★★★ — Excellent</option>
+                            <option value="4">★★★★☆ — Good</option>
+                            <option value="3">★★★☆☆ — Average</option>
+                            <option value="2">★★☆☆☆ — Poor</option>
+                            <option value="1">★☆☆☆☆ — Terrible</option>
+                        </select>
+
+                        <!-- recommend yes or no -->
+                        <label for="recommend">Do you recommend this?</label>
+                        <select name="recommend" id="recommend" required>
+                            <option value="">Select an option</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+
+                        <!-- written review -->
+                        <label for="description">Your thoughts</label>
+                        <textarea
+                            name="description"
+                            id="description"
+                            placeholder="What did you think of this movie?"
+                            required
+                        ></textarea>
+                    </fieldset>
+
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </section>
         </main>
         <footer id="main-footer"></footer>
     </body>
