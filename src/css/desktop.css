@@ -51,16 +51,14 @@
         }
     }
 
-    /* movie grid 6 columns */
+    /* movie grid 6 columns on desktop */
     .movie-list {
         grid-template-columns: repeat(6, 1fr);
         gap: 1.25rem;
 
         .movie-card {
-            transition: transform 0.2s;
-
             &:hover {
-                transform: translateY(-3px);
+                transform: translateY(-4px);
             }
 
             .movie-card__info {
@@ -95,7 +93,12 @@
         }
     }
 
-    /* watchlist cards wider */
+    /* streaming list wraps nicely on wider screens */
+    .streaming-list {
+        gap: 0.6rem;
+    }
+
+    /* watchlist cards on desktop */
     .watchlist-card {
         .watchlist-card__image img {
             width: 70px;
@@ -108,7 +111,7 @@
         }
     }
 
-    /* review form constrained */
+    /* review form constrained width */
     .review-form-section {
         max-width: 560px;
     }
