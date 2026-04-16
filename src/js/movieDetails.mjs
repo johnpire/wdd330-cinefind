@@ -10,35 +10,47 @@ export default class MovieDetails {
     }
 
     async init() {
-        this.movie = await this.dataSource.findMovieById(this.movieId);
-        this.displayMovie();
+        try {
+            this.movie = await this.dataSource.findMovieById(this.movieId);
+            this.displayMovie();
 
-        const button = document.getElementById("addToWatchlist");
-        button.addEventListener("click", () => this.addToWatchlist());
+            const button = document.getElementById("addToWatchlist");
+            if (!button) throw new Error("addToWatchlist button not found");
+            button.addEventListener("click", () => this.addToWatchlist());
+        } catch (err) {
+            console.error("failed to load movie details:", err);
+            const container = document.querySelector(".movie-detail");
+            if (container) {
+                container.innerHTML = `<p class="error-msg">failed to load movie details. please try again.</p>`;
+            }
+        }
     }
 
+    // add movie to watchlist, prevent duplicates
     addToWatchlist() {
-        let watchlist = getLocalStorage("cine-watchlist");
+        let watchlist = getLocalStorage("cine-watchlist") || [];
+        const exists = watchlist.some(m => m.id === this.movie.id);
 
-        if (!watchlist) {
-            watchlist = [];
+        if (exists) {
+            alert("this movie is already in your watchlist.");
+            return;
         }
 
-        const exists = watchlist.some((m) => m.id === this.movie.id);
-        if (!exists) {
-            watchlist.push(this.movie);
-            setLocalStorage("cine-watchlist", watchlist);
-        }
+        watchlist.push(this.movie);
+        setLocalStorage("cine-watchlist", watchlist);
+        alert(`"${this.movie.title}" added to your watchlist!`);
     }
 
     displayMovie() {
         const container = document.querySelector(".movie-detail");
+        if (!container) return;
         container.innerHTML = createMovieMarkup(this.movie);
     }
 }
 
+// build movie detail html from tmdb data
 function createMovieMarkup(movie) {
-    const genres = movie.genres?.map((g) => g.name).join(", ") ?? "N/A";
+    const genres = movie.genres?.map(g => g.name).join(", ") ?? "N/A";
     const year = movie.release_date?.split("-")[0] ?? "N/A";
     const poster = movie.poster_path
         ? IMG_BASE + movie.poster_path
@@ -55,7 +67,7 @@ function createMovieMarkup(movie) {
                 <p class="movie-detail__overview">${movie.overview}</p>
                 <div class="movie-detail__add">
                     <button id="addToWatchlist" data-id="${movie.id}">
-                        + Add to Watchlist
+                        + add to watchlist
                     </button>
                 </div>
             </div>

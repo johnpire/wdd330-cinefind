@@ -2,19 +2,20 @@ import { renderListWithTemplate } from "./utils.mjs";
 
 const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 
+// movie card template shared across pages
 export function movieCardTemplate(movie) {
     return `
-      <li class="movie-card">
+        <li class="movie-card">
             <a href="/movie_pages/index.html?movie=${movie.id}">
-                <img 
-                    src="${movie.poster_path ? IMG_BASE + movie.poster_path : "/images/no-poster.jpg"}" 
+                <img
+                    src="${movie.poster_path ? IMG_BASE + movie.poster_path : "/images/no-poster.jpg"}"
                     alt="${movie.title}">
                 <div class="movie-card__info">
                     <h2>${movie.title}</h2>
                     <p>${movie.release_date?.split("-")[0] ?? "N/A"} &bull; ★ ${movie.vote_average?.toFixed(1)}</p>
                 </div>
             </a>
-      </li>
+        </li>
     `;
 }
 
@@ -29,38 +30,41 @@ export default class MovieList {
     }
 
     async init() {
-        // fetch and render genre tabs
-        const genres = await this.dataSource.getGenres();
-        this.renderGenres(genres);
-        
-        // fetch and render initial movies
-        this.list = await this.dataSource.getMovies();
-        this.renderList(this.list);
-        
-        // start lazy load observer
-        this.initLazyLoad();
-
-        // re-render genre UI on resize
-        window.addEventListener("resize", () => {
+        try {
+            const genres = await this.dataSource.getGenres();
+            this.list = await this.dataSource.getMovies();
             this.renderGenres(genres);
-        });
+            this.renderList(this.list);
+            this.initLazyLoad();
+
+            // re-render genre ui on window resize
+            let resizeTimer;
+            window.addEventListener("resize", () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => this.renderGenres(genres), 200);
+            });
+        } catch (err) {
+            console.error("failed to initialize movie list:", err);
+            this.listElement.innerHTML = `<p class="error-msg">failed to load movies. please try again.</p>`;
+        }
     }
 
+    // render genre ui based on screen size
     renderGenres(genres) {
-      if (window.innerWidth >= 641) {
-        this.renderGenresDesktop(genres);
-      } else {
-        this.renderGenresMobile(genres);
-      }
+        if (window.innerWidth >= 641) {
+            this.renderGenresDesktop(genres);
+        } else {
+            this.renderGenresMobile(genres);
+        }
     }
 
+    // desktop: collapsible pill tabs
     renderGenresDesktop(genres) {
         const container = document.querySelector(".genre-tabs");
         if (!container) return;
 
-        // start collapsed, showing only the toggle label
         container.innerHTML = `
-            <button class="genre-toggle active" data-id="">Genre</button>
+            <button class="genre-toggle">Genre</button>
             <div class="genre-options hidden">
                 <button class="genre-tab active" data-id="">All</button>
                 ${genres.map(g => `<button class="genre-tab" data-id="${g.id}">${g.name}</button>`).join("")}
@@ -70,36 +74,35 @@ export default class MovieList {
         const toggle = container.querySelector(".genre-toggle");
         const options = container.querySelector(".genre-options");
 
-        // toggle collapse/expand
+        // toggle genre list visibility
         toggle.addEventListener("click", () => {
             options.classList.toggle("hidden");
         });
 
+        // handle genre selection
         options.addEventListener("click", async (e) => {
             const tab = e.target.closest(".genre-tab");
             if (!tab) return;
-            
+
             options.querySelectorAll(".genre-tab").forEach(t => t.classList.remove("active"));
             tab.classList.add("active");
-            
-            // update label to selected genre or back to "Genre"
+
+            // update label to selected genre or reset to "Genre"
             toggle.textContent = tab.dataset.id ? tab.textContent : "Genre";
-            
-            // collapse after selection
             options.classList.add("hidden");
-            
+
             await this.switchGenre(tab.dataset.id || null);
         });
     }
 
+    // mobile: native select dropdown
     renderGenresMobile(genres) {
         const container = document.querySelector(".genre-tabs");
         if (!container) return;
 
-        // dropdown select for mobile
         container.innerHTML = `
             <select class="genre-select">
-                <option value="">All</option>
+                <option value="">All Genres</option>
                 ${genres.map(g => `<option value="${g.id}">${g.name}</option>`).join("")}
             </select>
         `;
@@ -109,16 +112,22 @@ export default class MovieList {
         });
     }
 
+    // switch genre, reset pagination, reload list
     async switchGenre(genreId) {
-        this.currentPage = 1;
-        this.currentGenre = genreId;
-        
-        this.list = this.currentGenre
-            ? await this.dataSource.getMoviesByGenre(this.currentGenre)
-            : await this.dataSource.getMovies();
-        
-        this.renderList(this.list);
-    }   
+        try {
+            this.currentPage = 1;
+            this.currentGenre = genreId;
+
+            this.list = this.currentGenre
+                ? await this.dataSource.getMoviesByGenre(this.currentGenre)
+                : await this.dataSource.getMovies();
+
+            this.renderList(this.list);
+        } catch (err) {
+            console.error("failed to switch genre:", err);
+            this.listElement.innerHTML = `<p class="error-msg">failed to load movies for this genre.</p>`;
+        }
+    }
 
     renderList(list, append = false) {
         renderListWithTemplate(
@@ -130,22 +139,28 @@ export default class MovieList {
         );
     }
 
+    // load next page and append to existing list
     async loadMore() {
         if (this.loading) return;
         this.loading = true;
-        this.currentPage++;
 
-        const more = this.currentGenre
-            ? await this.dataSource.getMoviesByGenre(this.currentGenre, this.currentPage)
-            : await this.dataSource.getMovies(this.currentPage);
+        try {
+            this.currentPage++;
+            const more = this.currentGenre
+                ? await this.dataSource.getMoviesByGenre(this.currentGenre, this.currentPage)
+                : await this.dataSource.getMovies(this.currentPage);
 
-        this.list = [...this.list, ...more];
-        this.renderList(more, true);
-        this.loading = false;
+            this.list = [...this.list, ...more];
+            this.renderList(more, true);
+        } catch (err) {
+            console.error("failed to load more movies:", err);
+        } finally {
+            this.loading = false;
+        }
     }
 
+    // observe sentinel element to trigger lazy loading
     initLazyLoad() {
-        // sentinel div at bottom triggers loadMore when visible
         const sentinel = document.createElement("div");
         sentinel.classList.add("sentinel");
         this.listElement.insertAdjacentElement("afterend", sentinel);

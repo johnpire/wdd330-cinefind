@@ -1,6 +1,6 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
-// takes a form element and returns an object where the key is the "name" of the form input
+// convert form element to plain json object
 function formDataToJSON(formElement) {
     const formData = new FormData(formElement),
         convertedJSON = {};
@@ -18,16 +18,23 @@ export default class ReviewProcess {
         this.movieTitle = movieTitle;
     }
 
-    // packages and saves the review to localstorage
+    // validate, package, and save review to localstorage
     async submitReview() {
         const formElement = document.forms["review"];
+        if (!formElement) throw new Error("review form not found");
+
         const formJSON = formDataToJSON(formElement);
+
+        // basic validation
+        if (!formJSON.rating) throw new Error("rating is required");
+        if (!formJSON.recommend) throw new Error("recommendation is required");
+        if (!formJSON.description?.trim()) throw new Error("description is required");
 
         formJSON.movieId = this.movieId;
         formJSON.movieTitle = this.movieTitle;
         formJSON.submittedAt = new Date().toISOString();
 
-        // get existing reviews or start fresh
+        // append to existing reviews in localstorage
         const existing = getLocalStorage("cine-reviews") || [];
         existing.push(formJSON);
         setLocalStorage("cine-reviews", existing);

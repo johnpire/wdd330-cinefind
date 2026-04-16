@@ -11,6 +11,7 @@ async function convertToJson(res) {
 }
 
 export default class ExternalServices {
+    // fetch popular movies, supports pagination
     async getMovies(page = 1) {
         const response = await fetch(
             `${baseURL}discover/movie?api_key=${apiKey}&sort_by=popularity.desc&page=${page}`
@@ -19,6 +20,7 @@ export default class ExternalServices {
         return data.results;
     }
 
+    // fetch movies filtered by genre id
     async getMoviesByGenre(genreId, page = 1) {
         const response = await fetch(
             `${baseURL}discover/movie?api_key=${apiKey}&with_genres=${genreId}&page=${page}`
@@ -27,6 +29,7 @@ export default class ExternalServices {
         return data.results;
     }
 
+    // fetch all available genres from tmdb
     async getGenres() {
         const response = await fetch(
             `${baseURL}genre/movie/list?api_key=${apiKey}`
@@ -35,13 +38,16 @@ export default class ExternalServices {
         return data.genres;
     }
 
+    // fetch a single movie by its id
     async findMovieById(id) {
+        if (!id) throw new Error("no movie id provided");
         const response = await fetch(
             `${baseURL}movie/${id}?api_key=${apiKey}`
         );
         return await convertToJson(response);
     }
 
+    // fetch trending movies this week
     async getTrending() {
         const response = await fetch(
             `${baseURL}trending/movie/week?api_key=${apiKey}`
@@ -50,7 +56,9 @@ export default class ExternalServices {
         return data.results;
     }
 
+    // search movies by query string
     async searchMovies(query) {
+        if (!query.trim()) throw new Error("empty search query");
         const response = await fetch(
             `${baseURL}search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`
         );
@@ -58,15 +66,12 @@ export default class ExternalServices {
         return data.results;
     }
 
+    // mock review submission — saves to localstorage
     async submitReview(payload) {
-        const options = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        };
-        return await fetch(
-            import.meta.env.VITE_SERVER_URL + "review/",
-            options
-        ).then(convertToJson);
+        if (!payload) throw new Error("no review payload provided");
+        const existing = JSON.parse(localStorage.getItem("cine-reviews")) || [];
+        existing.push(payload);
+        localStorage.setItem("cine-reviews", JSON.stringify(existing));
+        return { success: true };
     }
 }
