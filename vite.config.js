@@ -12,6 +12,7 @@ build: {
       listing: resolve(__dirname, "src/movie_listing/index.html"),
       watchlist: resolve(__dirname, "src/watchlist/index.html"),
       review: resolve(__dirname, "src/review/index.html"),
+      success: resolve(_dirname, "src/review/success.html"),
       movie: resolve(__dirname, "src/movie_pages/index.html"),
     },
   },
