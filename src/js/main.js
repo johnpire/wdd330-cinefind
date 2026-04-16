@@ -8,7 +8,7 @@ const dataSource = new ExternalServices();
 
 // load and render trending movies on homepage
 async function loadTrending() {
-    const trendingList = document.querySelector(".trending-list");
+    const trendingList = document.querySelector(".trending .movie-list");
     if (!trendingList) return;
 
     try {
