@@ -16,7 +16,7 @@ async function loadTrending() {
         renderListWithTemplate(movieCardTemplate, trendingList, movies.slice(0, 8));
     } catch (err) {
         console.error("failed to load trending movies:", err);
-        const trendingList = document.querySelector(".trending-list");
+        const trendingList = document.querySelector(".trending .movie-list");
         if (trendingList) {
             trendingList.innerHTML = `<p class="error-msg">failed to load trending movies. please try again.</p>`;
         }
@@ -30,21 +30,29 @@ async function handleSearch(query) {
 
     if (!query.trim()) return;
 
+    // clear previous results before rendering new ones
+    resultsList.innerHTML = "";
+
     try {
         const movies = await dataSource.searchMovies(query);
 
         if (movies.length === 0) {
             resultsSection.classList.remove("hidden");
             resultsList.innerHTML = `<p class="error-msg">no results found for "${query}".</p>`;
+            resultsSection.scrollIntoView({ behavior: "smooth" });
             return;
         }
 
         resultsSection.classList.remove("hidden");
         renderListWithTemplate(movieCardTemplate, resultsList, movies);
+
+        // scroll down to results so trending doesn't block it
+        resultsSection.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
         console.error("search failed:", err);
         resultsSection.classList.remove("hidden");
         resultsList.innerHTML = `<p class="error-msg">search failed. please try again.</p>`;
+        resultsSection.scrollIntoView({ behavior: "smooth" });
     }
 }
 
