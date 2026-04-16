@@ -64,6 +64,7 @@ export default class MovieDetails {
 
             if (!searchRes.ok) throw new Error("watchmode search failed");
             const searchData = await searchRes.json();
+            console.log("searchData:", searchData); // test
 
             if (!searchData.title_results?.length) {
                 container.innerHTML = `<p class="streaming-none">no streaming info available.</p>`;
@@ -71,6 +72,7 @@ export default class MovieDetails {
             }
 
             const watchmodeId = searchData.title_results[0].id;
+            console.log("watchmodeId:", watchmodeId); // test
 
             // get streaming sources for the found title
             const sourcesRes = await fetch(
@@ -79,6 +81,7 @@ export default class MovieDetails {
 
             if (!sourcesRes.ok) throw new Error("watchmode sources failed");
             const sources = await sourcesRes.json();
+            console.log("sources:", sources); // test
 
             // filter to subscription services only, remove duplicates by name
             const unique = sources
@@ -87,6 +90,7 @@ export default class MovieDetails {
                     if (!acc.find(x => x.name === s.name)) acc.push(s);
                     return acc;
                 }, []);
+                console.log("filtered unique sources:", unique); // test
 
             if (!unique.length) {
                 container.innerHTML = `<p class="streaming-none">not available on any streaming service.</p>`;
