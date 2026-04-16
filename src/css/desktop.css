@@ -1,6 +1,6 @@
 @media (min-width: 641px) {
 
-    /* Header */
+    /* header */
     .site-header {
         padding: 1rem 2rem;
 
@@ -19,25 +19,25 @@
         }
     }
 
-    /* Footer */
+    /* footer */
     .site-footer {
         padding: 1.5rem 2rem;
         font-size: 0.85rem;
     }
 
-    /* Main content */
+    /* main content centered and constrained */
     main {
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem 2rem;
     }
 
-    /* Hero */
+    /* hero */
     .hero {
         padding: 2.5rem 0 1.5rem;
     }
 
-    /* Search form — side by side on desktop */
+    /* search form side by side */
     .search-form {
         flex-direction: row;
         max-width: 560px;
@@ -51,7 +51,7 @@
         }
     }
 
-    /* Movie grid — 6 columns on desktop */
+    /* movie grid 6 columns */
     .movie-list {
         grid-template-columns: repeat(6, 1fr);
         gap: 1.25rem;
@@ -77,7 +77,7 @@
         }
     }
 
-    /* Movie detail — side by side on desktop */
+    /* movie detail side by side */
     .movie-detail {
         flex-direction: row;
         align-items: start;
@@ -95,22 +95,21 @@
         }
     }
 
-    /* Filter modal — slightly wider on desktop */
-    dialog {
-        width: 320px;
-    }
+    /* watchlist cards wider */
+    .watchlist-card {
+        .watchlist-card__image img {
+            width: 70px;
+        }
 
-    /* watchlist — wider cards on desktop */
-    .watchlist {
-        .watchlist-card {
-            img {
-                width: 80px;
-            }
+        /* actions side by side on desktop */
+        .watchlist-card__actions {
+            flex-direction: row;
+            gap: 0.5rem;
         }
     }
 
-    /* Review form — constrained width on desktop */
-    .review-form {
+    /* review form constrained */
+    .review-form-section {
         max-width: 560px;
     }
 }
