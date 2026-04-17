@@ -409,24 +409,19 @@ main {
     flex-wrap: wrap;
 
     &__item {
+        color: var(--color-primary);
         display: flex;
         align-items: center;
         gap: 0.3rem;
     }
 
-    &__icon {
-        color: var(--color-primary);
-    }
-
     &__label {
         font-size: 0.85rem;
-        color: var(--color-muted);
     }
 
     &__score {
         font-size: 0.95rem;
         font-weight: 600;
-        color: var(--color-primary);
     }   
 }
 
