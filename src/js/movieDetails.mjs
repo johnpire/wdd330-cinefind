@@ -18,6 +18,9 @@ export default class MovieDetails {
             const button = document.getElementById("addToWatchlist");
             if (!button) throw new Error("addToWatchlist button not found");
             button.addEventListener("click", () => this.addToWatchlist());
+
+            // initialize OMDb rating
+            await this.loadCriticRatings();
         } catch (err) {
             console.error("failed to load movie details:", err);
             const container = document.querySelector(".movie-detail");
@@ -51,33 +54,45 @@ export default class MovieDetails {
     // OMDb ratings
     async loadCriticRatings() {
         const imdbId = this.movie.imdb_id;
+        console.log("movie object:", this.movie);
+        console.log("external_ids:", this.movie.external_ids);
         console.log("imdb_id:", imdbId);
-        if (!imdbId) return;
-
+        if (!imdbId) {
+            console.warn("no imdb_id, skipping omdb fetch");
+            return;
+        }
+    
         try {
             const url = `https://www.omdbapi.com/?i=${imdbId}&apikey=${OMDB_KEY}`;
+            console.log("omdb url:", url);
+        
             const res = await fetch(url);
+            console.log("omdb status:", res.status);
+        
             const data = await res.json();
             console.log("omdb response:", data);
-
+        
             if (data.Response === "False") {
-                console.warn("omdb error:", data.Error);
+                console.warn("omdb returned false:", data.Error);
                 return;
             }
-
+        
             // patch in imdb score
             const imdbEl = document.querySelector("#rating-imdb .ratings__score");
+            console.log("imdb el found:", imdbEl, "| value:", data.imdbRating);
             if (imdbEl) imdbEl.textContent = data.imdbRating ?? "n/a";
-
+        
             // patch in rotten tomatoes
             const rt = data.Ratings?.find(r => r.Source === "Rotten Tomatoes");
             const rtEl = document.querySelector("#rating-rt .ratings__score");
+            console.log("rt entry:", rt, "| rt el found:", rtEl);
             if (rtEl) rtEl.textContent = rt?.Value ?? "n/a";
-
+        
             // patch in metacritic
             const mcEl = document.querySelector("#rating-mc .ratings__score");
-            if (mcEl) mcEl.textContent = data.Metascore !== "N/A" ? `${data.Metascore}` : "n/a";
-
+            console.log("metacritic:", data.Metascore, "| mc el found:", mcEl);
+            if (mcEl) mcEl.textContent = data.Metascore !== "N/A" ? data.Metascore : "n/a";
+        
         } catch (err) {
             console.error("failed to load critic ratings:", err);
         }
