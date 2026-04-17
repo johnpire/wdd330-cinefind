@@ -117,8 +117,9 @@ function createMovieMarkup(movie) {
                         <span class="ratings__label">TMDb</span>
                     </div>
                     <div class="ratings__item hidden" id="rating-imdb">
-                        <span class="ratings__label">IMDb:</span>
-                        <span class="ratings__score"></span>
+                        <span class="ratings__icon">★</span>
+                        <span class="ratings__score">/10</span>
+                        <span class="ratings__label">IMDb</span>
                     </div>
                     <div class="ratings__item hidden" id="rating-rt">
                         <span class="ratings__icon">🍅</span>
