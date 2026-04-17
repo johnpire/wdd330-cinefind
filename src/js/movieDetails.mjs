@@ -54,55 +54,41 @@ export default class MovieDetails {
     // OMDb ratings
     async loadCriticRatings() {
         const imdbId = this.movie.imdb_id;
-        console.log("imdb_id:", imdbId);
         if (!imdbId) return;
-
-        // patch in imdb score — only show if value exists
-        const imdbEl = document.querySelector("#rating-imdb .ratings__score");
-        if (imdbEl && data.imdbRating && data.imdbRating !== "N/A") {
-            imdbEl.textContent = data.imdbRating;
-            document.querySelector("#rating-imdb").classList.remove("hidden");
-        }
         
-        // patch in rotten tomatoes
-        const rt = data.Ratings?.find(r => r.Source === "Rotten Tomatoes");
-        const rtEl = document.querySelector("#rating-rt .ratings__score");
-        if (rtEl && rt?.Value) {
-            rtEl.textContent = rt.Value;
-            document.querySelector("#rating-rt").classList.remove("hidden");
-        }
-        
-        // patch in metacritic
-        const mcEl = document.querySelector("#rating-mc .ratings__score");
-        if (mcEl && data.Metascore && data.Metascore !== "N/A") {
-            mcEl.textContent = data.Metascore;
-            document.querySelector("#rating-mc").classList.remove("hidden");
-        }
-
         try {
-            const url = `https://www.omdbapi.com/?i=${imdbId}&apikey=${OMDB_KEY}`;
-            const res = await fetch(url);
+            const res = await fetch(
+                `https://www.omdbapi.com/?i=${imdbId}&apikey=${OMDB_KEY}`
+            );
+        
+            if (!res.ok) throw new Error(`omdb request failed: ${res.status}`);
+        
             const data = await res.json();
-            console.log("omdb response:", data);
-
-            if (data.Response === "False") {
-                console.warn("omdb error:", data.Error);
-                return;
-            }
-
-            // patch in imdb score
+        
+            if (data.Response === "False") throw new Error(`omdb: ${data.Error}`);
+        
+            // patch in imdb score — only show if value exists
             const imdbEl = document.querySelector("#rating-imdb .ratings__score");
-            if (imdbEl) imdbEl.textContent = data.imdbRating ?? "n/a";
-
+            if (imdbEl && data.imdbRating && data.imdbRating !== "N/A") {
+                imdbEl.textContent = data.imdbRating;
+                document.querySelector("#rating-imdb").classList.remove("hidden");
+            }
+        
             // patch in rotten tomatoes
             const rt = data.Ratings?.find(r => r.Source === "Rotten Tomatoes");
             const rtEl = document.querySelector("#rating-rt .ratings__score");
-            if (rtEl) rtEl.textContent = rt?.Value ?? "n/a";
-
+            if (rtEl && rt?.Value) {
+                rtEl.textContent = rt.Value;
+                document.querySelector("#rating-rt").classList.remove("hidden");
+            }
+        
             // patch in metacritic
             const mcEl = document.querySelector("#rating-mc .ratings__score");
-            if (mcEl) mcEl.textContent = data.Metascore !== "N/A" ? `${data.Metascore}` : "n/a";
-
+            if (mcEl && data.Metascore && data.Metascore !== "N/A") {
+                mcEl.textContent = data.Metascore;
+                document.querySelector("#rating-mc").classList.remove("hidden");
+            }
+        
         } catch (err) {
             console.error("failed to load critic ratings:", err);
         }
