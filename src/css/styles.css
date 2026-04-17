@@ -170,7 +170,55 @@ main {
 
 /* homepage hero */
 .hero {
-    padding: 1.5rem 0 1rem;
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    background-image: url("/images/hero.jpg");
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+
+    /* dark overlay so text is readable over image */
+    .hero__overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+    }
+
+    /* form and text sit above the overlay */
+    .hero__content {
+        position: relative;
+        z-index: 1;
+        padding: 2rem 1.25rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero__title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+    }
+
+    .hero__sub {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 0.5rem;
+    }
+
+    /* search form inside hero — inputs go white on dark bg */
+    .search-form {
+        input {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+        }
+    }
 }
 
 /* search form */

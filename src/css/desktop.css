@@ -34,7 +34,33 @@
 
     /* hero */
     .hero {
-        padding: 2.5rem 0 1.5rem;
+        min-height: 380px;
+        
+        .hero__content {
+            padding: 3rem 2.5rem;
+            max-width: 600px;
+        }
+    
+        .hero__title {
+            font-size: 2.25rem;
+        }
+    
+        .hero__sub {
+            font-size: 1rem;
+        }
+    
+        .search-form {
+            flex-direction: row;
+            max-width: 480px;
+        
+            input {
+                flex: 1;
+            }
+        
+            .btn {
+                width: auto;
+            }
+        }
     }
 
     /* search form side by side */
