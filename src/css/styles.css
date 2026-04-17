@@ -407,6 +407,7 @@ main {
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
+    color: var(--color-primary);
 
     &__item {
         color: var(--color-primary);
