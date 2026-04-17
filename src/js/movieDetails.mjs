@@ -54,45 +54,55 @@ export default class MovieDetails {
     // OMDb ratings
     async loadCriticRatings() {
         const imdbId = this.movie.imdb_id;
-        console.log("movie object:", this.movie);
-        console.log("external_ids:", this.movie.external_ids);
         console.log("imdb_id:", imdbId);
-        if (!imdbId) {
-            console.warn("no imdb_id, skipping omdb fetch");
-            return;
+        if (!imdbId) return;
+
+        // patch in imdb score — only show if value exists
+        const imdbEl = document.querySelector("#rating-imdb .ratings__score");
+        if (imdbEl && data.imdbRating && data.imdbRating !== "N/A") {
+            imdbEl.textContent = data.imdbRating;
+            document.querySelector("#rating-imdb").classList.remove("hidden");
         }
-    
+        
+        // patch in rotten tomatoes
+        const rt = data.Ratings?.find(r => r.Source === "Rotten Tomatoes");
+        const rtEl = document.querySelector("#rating-rt .ratings__score");
+        if (rtEl && rt?.Value) {
+            rtEl.textContent = rt.Value;
+            document.querySelector("#rating-rt").classList.remove("hidden");
+        }
+        
+        // patch in metacritic
+        const mcEl = document.querySelector("#rating-mc .ratings__score");
+        if (mcEl && data.Metascore && data.Metascore !== "N/A") {
+            mcEl.textContent = data.Metascore;
+            document.querySelector("#rating-mc").classList.remove("hidden");
+        }
+
         try {
             const url = `https://www.omdbapi.com/?i=${imdbId}&apikey=${OMDB_KEY}`;
-            console.log("omdb url:", url);
-        
             const res = await fetch(url);
-            console.log("omdb status:", res.status);
-        
             const data = await res.json();
             console.log("omdb response:", data);
-        
+
             if (data.Response === "False") {
-                console.warn("omdb returned false:", data.Error);
+                console.warn("omdb error:", data.Error);
                 return;
             }
-        
+
             // patch in imdb score
             const imdbEl = document.querySelector("#rating-imdb .ratings__score");
-            console.log("imdb el found:", imdbEl, "| value:", data.imdbRating);
             if (imdbEl) imdbEl.textContent = data.imdbRating ?? "n/a";
-        
+
             // patch in rotten tomatoes
             const rt = data.Ratings?.find(r => r.Source === "Rotten Tomatoes");
             const rtEl = document.querySelector("#rating-rt .ratings__score");
-            console.log("rt entry:", rt, "| rt el found:", rtEl);
             if (rtEl) rtEl.textContent = rt?.Value ?? "n/a";
-        
+
             // patch in metacritic
             const mcEl = document.querySelector("#rating-mc .ratings__score");
-            console.log("metacritic:", data.Metascore, "| mc el found:", mcEl);
-            if (mcEl) mcEl.textContent = data.Metascore !== "N/A" ? data.Metascore : "n/a";
-        
+            if (mcEl) mcEl.textContent = data.Metascore !== "N/A" ? `${data.Metascore}` : "n/a";
+
         } catch (err) {
             console.error("failed to load critic ratings:", err);
         }
@@ -118,20 +128,22 @@ function createMovieMarkup(movie) {
 
                 <div class="ratings">
                     <div class="ratings__item">
-                        <span class="ratings__score">${movie.vote_average?.toFixed(1)}</span>
+                        <span class="ratings__icon">★</span>
+                        <span class="ratings__score">${movie.vote_average?.toFixed(1)}/10</span>
                         <span class="ratings__label">TMDb</span>
                     </div>
-                    <div class="ratings__item" id="rating-imdb">
-                        <span class="ratings__score">—</span>
-                        <span class="ratings__label">IMDb</span>
+                    <div class="ratings__item hidden" id="rating-imdb">
+                        <span class="ratings__label">IMDb:</span>
+                        <span class="ratings__score"></span>
                     </div>
-                    <div class="ratings__item" id="rating-rt">
-                        <span class="ratings__score">—</span>
-                        <span class="ratings__label">Rotten Tomatoes</span>
+                    <div class="ratings__item hidden" id="rating-rt">
+                        <span class="ratings__icon">🍅</span>
+                        <span class="ratings__label">Rotten Tomatoes:</span>
+                        <span class="ratings__score"></span>
                     </div>
-                    <div class="ratings__item" id="rating-mc">
-                        <span class="ratings__score">—</span>
-                        <span class="ratings__label">Metacritic</span>
+                    <div class="ratings__item hidden" id="rating-mc">
+                        <span class="ratings__label">Metacritic:</span>
+                        <span class="ratings__score"></span>
                     </div>
                 </div>
 
