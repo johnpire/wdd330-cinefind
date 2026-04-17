@@ -70,7 +70,7 @@ export default class MovieDetails {
             // patch in imdb score — only show if value exists
             const imdbEl = document.querySelector("#rating-imdb .ratings__score");
             if (imdbEl && data.imdbRating && data.imdbRating !== "N/A") {
-                imdbEl.textContent = data.imdbRating;
+                imdbEl.textContent = data.imdbRating + '/10';
                 document.querySelector("#rating-imdb").classList.remove("hidden");
             }
 
@@ -118,7 +118,7 @@ function createMovieMarkup(movie) {
                     </div>
                     <div class="ratings__item hidden" id="rating-imdb">
                         <span class="ratings__icon">★</span>
-                        <span class="ratings__score">/10</span>
+                        <span class="ratings__score"></span>
                         <span class="ratings__label">IMDb</span>
                     </div>
                     <div class="ratings__item hidden" id="rating-rt">
