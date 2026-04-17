@@ -1,6 +1,7 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 const IMG_BASE = "https://image.tmdb.org/t/p/w500";
+const OMDB_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export default class MovieDetails {
     constructor(movieId, dataSource) {

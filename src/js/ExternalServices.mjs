@@ -42,9 +42,14 @@ export default class ExternalServices {
     async findMovieById(id) {
         if (!id) throw new Error("no movie id provided");
         const response = await fetch(
-            `${baseURL}movie/${id}?api_key=${apiKey}`
+            `${baseURL}movie/${id}?api_key=${apiKey}&append_to_response=external_ids`
         );
-        return await convertToJson(response);
+        const data = await convertToJson(response);
+    
+        // lift imdb_id up to the top level for easy access
+        data.imdb_id = data.external_ids?.imdb_id ?? null;
+    
+        return data;
     }
 
     // fetch trending movies this week
