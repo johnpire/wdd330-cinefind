@@ -401,6 +401,46 @@ main {
     }
 }
 
+/* OMDb ratings */
+.ratings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface, #1a1a1a);
+    border: 1px solid var(--color-border, #2e2e2e);
+    border-radius: 8px;
+    gap: 1rem;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        flex: 1;
+
+        /* vertical divider between each item */
+        & + .ratings__item {
+            border-left: 1px solid var(--color-border, #2e2e2e);
+            padding-left: 1rem;
+        }
+    }
+
+    &__score {
+        font-size: 1.4rem;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--color-text, #fff);
+    }
+
+    &__label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-muted, #aaa);
+    }
+}
+
 /* watchlist page */
 .watchlist-list {
     list-style: none;
