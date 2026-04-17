@@ -55,25 +55,25 @@ export default class MovieDetails {
     async loadCriticRatings() {
         const imdbId = this.movie.imdb_id;
         if (!imdbId) return;
-        
+
         try {
             const res = await fetch(
                 `https://www.omdbapi.com/?i=${imdbId}&apikey=${OMDB_KEY}`
             );
-        
+
             if (!res.ok) throw new Error(`omdb request failed: ${res.status}`);
-        
+
             const data = await res.json();
-        
+
             if (data.Response === "False") throw new Error(`omdb: ${data.Error}`);
-        
+
             // patch in imdb score — only show if value exists
             const imdbEl = document.querySelector("#rating-imdb .ratings__score");
             if (imdbEl && data.imdbRating && data.imdbRating !== "N/A") {
                 imdbEl.textContent = data.imdbRating;
                 document.querySelector("#rating-imdb").classList.remove("hidden");
             }
-        
+
             // patch in rotten tomatoes
             const rt = data.Ratings?.find(r => r.Source === "Rotten Tomatoes");
             const rtEl = document.querySelector("#rating-rt .ratings__score");
@@ -81,14 +81,14 @@ export default class MovieDetails {
                 rtEl.textContent = rt.Value;
                 document.querySelector("#rating-rt").classList.remove("hidden");
             }
-        
+
             // patch in metacritic
             const mcEl = document.querySelector("#rating-mc .ratings__score");
             if (mcEl && data.Metascore && data.Metascore !== "N/A") {
                 mcEl.textContent = data.Metascore;
                 document.querySelector("#rating-mc").classList.remove("hidden");
             }
-        
+
         } catch (err) {
             console.error("failed to load critic ratings:", err);
         }
@@ -109,8 +109,6 @@ function createMovieMarkup(movie) {
             <div class="movie-detail__info">
                 <h2>${movie.title}</h2>
                 <p class="movie-detail__meta">${year} &bull; ${genres}</p>
-                <p class="movie-detail__runtime">${movie.runtime} min</p>
-                <p class="movie-detail__overview">${movie.overview}</p>
 
                 <div class="ratings">
                     <div class="ratings__item">
@@ -132,6 +130,9 @@ function createMovieMarkup(movie) {
                         <span class="ratings__score"></span>
                     </div>
                 </div>
+
+                <p class="movie-detail__runtime">${movie.runtime} min</p>
+                <p class="movie-detail__overview">${movie.overview}</p>
 
                 <div class="movie-detail__add">
                     <button id="addToWatchlist" data-id="${movie.id}">
